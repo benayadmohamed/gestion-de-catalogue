@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Produit>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container spacer">
+    <a asp-action="FormProduit">Nouveau Produit</a>
+</div>
+<div class="container spacer">
+    <form method="post" action="/Produit/Chercher">
+        <div class="form-group">
+            <label>Mot Clé:</label>
+            <input type="text" name="motCle" value="@Html.ViewBag.motCle"/>
+            <button type="submit">Chercher</button>
+            @Html.ValidationMessage("motCle", new {@class = "text-danger"})
+        </div>
+    </form>
+</div>
+<div class="container spacer">
+    <form method="post" id="changeCat" action="/Produit/SelectCat">
+        <div class="form-group">
+            <label>Categorie :</label>
+            <input hidden type="text" name="motCle" value="@Html.ViewBag.motCle"/>
+            <select onchange="selectCat()" name="categorieID">
+                @foreach (var p in ViewBag.listCategories)
+                {
+                    @if (ViewBag.categorieID == @p.CategorieID)
+                    {
+                        <option selected value="@p.CategorieID">@p.NomCategorie</option>
+                    }
+                    else
+                    {
+                        <option value="@p.CategorieID">@p.NomCategorie</option>
+                    }
+                }
+            </select>
+            @* <select asp-for="CategorieID" *@
+            @*         asp-items="@(new SelectList(ViewBag.listCategories, "CategorieID", "NomCategorie"))"> *@
+            @*                          <option>Please select one</option> *@
+            @*                      </select> *@
+        </div>
+
+    </form>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.ProduitId)</th>
+        <th>@Html.DisplayNameFor(model => model.Designation)</th>
+        <th>@Html.DisplayNameFor(model => model.Prix)</th>
+        <th>@Html.DisplayNameFor(model => model.Categorie)</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => p.ProduitId)</td>
+            <td>@Html.DisplayFor(modelItem => p.Designation)</td>
+            <td>@Html.DisplayFor(modelItem => p.Prix)</td>
+            <td>@Html.DisplayFor(modelItem => p.Categorie.NomCategorie)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@p.ProduitId">Edit</a>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@p.ProduitId"
+                   onclick="return confirm('êtes vous sûre de vouloir supprimer?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    <script >
+    function selectCat() {
+      document.getElementById('changeCat').submit();
+    }
+    </script>
+    </tbody>
+</table>

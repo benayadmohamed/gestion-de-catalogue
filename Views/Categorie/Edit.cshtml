@@ -1,0 +1,17 @@
+﻿@model gestion_de_catalogue.Models.Categorie
+@{
+    ViewBag.title = "Saisie d'une categorie";
+}
+<div class="container">
+    <form method="post" asp-action="Edit">
+        <input hidden name="CategorieID" value="@Model.CategorieID">
+        <div class="form-group">
+            @Html.LabelFor(m => m.NomCategorie, new {@class = "control-label"})
+            @Html.TextBoxFor(m => m.NomCategorie, new {@class = "form-control"})
+            @Html.ValidationMessageFor(m => m.NomCategorie, "", new {@class = "text-danger"})
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

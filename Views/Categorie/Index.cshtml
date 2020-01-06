@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Categorie>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container spacer">
+    <a asp-action="Create">Nouveau Categorie</a>
+</div>
+<div class="container spacer">
+    <form method="post" action="/Produit/Chercher">
+        <div class="form-group">
+            <label>Mot Clé:</label>
+            <input type="text" name="motCle" value="@Html.ViewBag.motCle"/>
+            <button type="submit">Chercher</button>
+            @Html.ValidationMessage("motCle", new {@class = "text-danger"})
+        </div>
+    </form>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.CategorieID)</th>
+        <th>@Html.DisplayNameFor(model => model.NomCategorie)</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => p.CategorieID)</td>
+            <td>@Html.DisplayFor(modelItem => p.NomCategorie)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@p.CategorieID">Edit</a>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@p.CategorieID"
+                   onclick="return confirm('êtes vous sûre de vouloir supprimer?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    <script >
+    function selectCat() {
+      document.getElementById('changeCat').submit();
+    }
+    </script>
+    </tbody>
+</table>
